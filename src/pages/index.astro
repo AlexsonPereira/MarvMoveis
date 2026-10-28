@@ -1,0 +1,190 @@
+---
+import Base from "../layouts/Base.astro";
+import { ambientes, cidades, projetos, linkWhats } from "../data/site";
+
+const capa = (amb: string) => projetos.find((p) => p.ambiente === amb)?.fotos[0] ?? projetos[0].fotos[0];
+
+const etapas = [
+  { n: "01", t: "Briefing", d: "Visitamos seu espaço, medimos e entendemos sua rotina e seu estilo." },
+  { n: "02", t: "Projeto 3D", d: "Você visualiza cada detalhe, acabamento e ferragem antes da produção." },
+  { n: "03", t: "Produção", d: "Fabricação própria com MDF de primeira linha e acabamento preciso." },
+  { n: "04", t: "Montagem", d: "Equipe própria, instalação limpa e entrega no prazo combinado." },
+];
+
+const depoimentos = [
+  { t: "Ficou exatamente como no projeto 3D. Acabamento impecável e equipe muito cuidadosa.", a: "Cliente — Guanambi" },
+  { t: "Planejaram cada centímetro da minha cozinha. Hoje é o lugar preferido da casa.", a: "Cliente — Caculé" },
+  { t: "Atendimento do início ao fim, cumpriram o prazo e a montagem foi rápida.", a: "Cliente — Urandi" },
+];
+---
+<Base
+  title="Marv Móveis Planejados | Guanambi e região – BA"
+  description="Móveis planejados sob medida em Guanambi, Ibiassucê, Caculé, Licínio de Almeida e Urandi. Cozinhas, dormitórios, closets e ambientes comerciais."
+>
+  <header class="nav">
+    <a href="#" class="logo" aria-label="Marv Móveis Planejados">marv<span>v</span></a>
+    <nav>
+      <a href="#ambientes">Ambientes</a>
+      <a href="#portfolio">Portfólio</a>
+      <a href="#processo">Processo</a>
+      <a href="#atendemos">Onde atendemos</a>
+    </nav>
+    <a class="btn btn-sm" href={linkWhats()} target="_blank" rel="noopener">Orçamento</a>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-txt">
+      <p class="eyebrow">Móveis planejados · Sertão baiano</p>
+      <h1 class="reveal-lines">Móveis que<br /><em>traduzem</em> você.</h1>
+      <p class="lead">Projetos sob medida, do primeiro traço à última dobradiça. Feitos para durar e pensados para a sua rotina.</p>
+      <div class="hero-ctas">
+        <a class="btn" href={linkWhats()} target="_blank" rel="noopener">Planejar meu ambiente</a>
+        <a class="link-arrow" href="#portfolio">Ver projetos</a>
+      </div>
+    </div>
+    <div class="hero-stack">
+      <img class="s1" data-speed="-0.15" src={projetos[0].fotos[0]} alt="Cozinha planejada" />
+      <img class="s2" data-speed="0.12" src={projetos[1].fotos[0]} alt="Dormitório planejado" />
+      <img class="s3" data-speed="-0.05" src={projetos[2].fotos[0]} alt="Sala planejada" />
+    </div>
+  </section>
+
+  <!-- NÚMEROS -->
+  <section class="numeros">
+    <div><strong data-count="10">0</strong><span>+ anos de marcenaria</span></div>
+    <div><strong data-count="500">0</strong><span>+ ambientes entregues</span></div>
+    <div><strong data-count="5">0</strong><span>cidades atendidas</span></div>
+    <div><strong data-count="100">0</strong><span>% sob medida</span></div>
+  </section>
+
+  <!-- AMBIENTES -->
+  <section id="ambientes" class="ambientes light">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Ambientes</p>
+        <h2>O que <em>planejamos</em></h2>
+      </div>
+      <p class="amb-sub">Escolha um ambiente para ver os projetos.</p>
+    </div>
+    <ul class="amb-grid">
+      {ambientes.map((a, i) => {
+        const qtd = projetos.filter((p) => p.ambiente === a.id).length;
+        return (
+          <li>
+            <a href="#portfolio" class="amb-card" data-filter-link={a.id}>
+              <img src={capa(a.id)} alt={a.nome} loading="lazy" />
+              <span class="amb-info">
+                <span class="idx">0{i + 1}</span>
+                <span class="nome">{a.nome}</span>
+                <span class="qtd">{qtd} projeto{qtd !== 1 ? "s" : ""} <b>→</b></span>
+              </span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <!-- PORTFÓLIO -->
+  <section id="portfolio" class="portfolio">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Portfólio</p>
+        <h2>Projetos <em>entregues</em></h2>
+      </div>
+      <div class="filtros">
+        <button class="ativo" data-filter="todos">Todos</button>
+        {ambientes.map((a) => <button data-filter={a.id}>{a.nome}</button>)}
+      </div>
+    </div>
+    <div class="grid">
+      {projetos.map((p, i) => (
+        <button class="card" data-amb={p.ambiente} data-index={i} aria-label={`Abrir ${p.titulo}`}>
+          <img src={p.fotos[0]} alt={p.titulo} loading="lazy" />
+          <span class="card-info">
+            <span class="card-t">{p.titulo}</span>
+            <span class="card-c">{p.cidade} · {p.fotos.length} foto{p.fotos.length > 1 ? "s" : ""}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- STORIES -->
+  <div class="stories" hidden>
+    <div class="stories-bars"></div>
+    <img class="stories-img" alt="" />
+    <button class="stories-prev" aria-label="Anterior"></button>
+    <button class="stories-next" aria-label="Próxima"></button>
+    <button class="stories-close" aria-label="Fechar">✕</button>
+    <div class="stories-foot">
+      <div><p class="stories-t"></p><p class="stories-c"></p></div>
+      <a class="btn stories-cta" target="_blank" rel="noopener">Quero um assim</a>
+    </div>
+  </div>
+
+  <!-- PROCESSO -->
+  <section id="processo" class="processo light">
+    <p class="eyebrow">Como trabalhamos</p>
+    <h2>Do projeto à <em>montagem</em></h2>
+    <ol class="etapas">
+      {etapas.map((e) => (
+        <li class="fade-up">
+          <span class="num">{e.n}</span>
+          <h3>{e.t}</h3>
+          <p>{e.d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- ONDE ATENDEMOS -->
+  <section id="atendemos" class="atendemos">
+    <p class="eyebrow">Onde atendemos</p>
+    <ul class="cidades">
+      {cidades.map((c) => (
+        <li class="fade-up">
+          <a href={linkWhats(`Olá! Sou de ${c} e gostaria de um orçamento de móveis planejados.`)} target="_blank" rel="noopener">
+            {c}<span>BA</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="depoimentos light">
+    <p class="eyebrow">Quem já tem Marv</p>
+    <div class="dep-grid">
+      {depoimentos.map((d) => (
+        <blockquote class="fade-up">
+          <p>“{d.t}”</p>
+          <cite>{d.a}</cite>
+        </blockquote>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <h2>Vamos planejar o<br /><em>seu ambiente?</em></h2>
+    <a class="btn btn-lg" href={linkWhats()} target="_blank" rel="noopener">Conversar no WhatsApp</a>
+  </section>
+
+  <footer class="footer">
+    <a href="#" class="logo">marv<span>v</span></a>
+    <p>Móveis Planejados · Guanambi – BA</p>
+    <p><a href={linkWhats()} target="_blank" rel="noopener">(77) 9105-6830</a></p>
+    <p class="copy">© {new Date().getFullYear()} Marv Móveis Planejados</p>
+  </footer>
+
+  <a class="wa-float" href={linkWhats()} target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 32 32" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-1-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5 1-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.7 5 2.1.9 3 1 4 .8.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+  </a>
+
+  <script>
+    import { initSite } from "../scripts/site";
+    initSite();
+  </script>
+</Base>
